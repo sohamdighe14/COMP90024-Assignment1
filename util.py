@@ -51,13 +51,14 @@ def GetGridCell(x,y):
 
 
 def GetData(tweet):
-    tweet_data = {}
-    if type(tweet['geo'])!= type(None):
+    tweet_data = None
+    if tweet['doc']['geo'] is not None:
         language = tweet['doc']['metadata']['iso_language_code']
         x = tweet['doc']['geo']['coordinates'][1]
         y = tweet['doc']['geo']['coordinates'][0]
         #checking if the point lies in grid
-        if 151.992551 < x < 149.792551 and -32.81645 < y < -34.81645:
+        if 151.992551 > x > 149.792551 and -32.81645 > y > -34.81645:
+            tweet_data = {}
             tweet_data['language'] = language
             tweet_data['grid_cell'] = GetGridCell(x,y)
     return tweet_data

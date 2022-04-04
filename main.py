@@ -27,13 +27,15 @@ argParser.add_argument('--langcodes', type = str, default = 'language_codes.json
 args = argParser.parse_args()
 """
 here = os.path.dirname(os.path.abspath(__file__))
-dataSetPath = os.path.join(here, dataset)
-codesPath = os.path.join(here, langcodes)
-gridPath = os.path.join(here, sydGrid)
+#dataSetPath = os.path.join(here, dataset)
+dataSetPath = './smallTwitter.json'
+codesPath = './language_codes.json'
+#codesPath = os.path.join(here, langcodes)
+#gridPath = os.path.join(here, sydGrid)
 
 
 lc = LangCodes(codesPath)
-grid = SydGrid(gridPath)
+#grid = SydGrid(gridPath)
 
 def main():
     dataProcessor = DataProcessor()
