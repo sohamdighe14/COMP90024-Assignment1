@@ -76,8 +76,11 @@ def main():
     if RANK==0:
         counter_lang = dict(Counter())
         for item in worker_results:
-            for lang in item:
-                counter_lang[item][lang] = counter_lang[item][lang] + worker_results[item][lang] 
+            for lang in item.keys():
+                if lang not in counter_lang.keys():
+                    counter_lang[lang] = item[lang] 
+                else:
+                    counter_lang[lang] = counter_lang[lang] + item[lang] 
     
     print("")
     print("Final results")

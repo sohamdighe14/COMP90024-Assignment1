@@ -63,14 +63,10 @@ class DataProcessor():
         if data is not None:
             language = data['language']
             cell = data['grid_cell']
-            print(type(cell))
-            print(self.lang_counter.keys())
-            if cell not in self.lang_counter.keys(): 
-                self.lang_counter[cell] = Counter(language,1)
-                print('process tweet ass1')
+            if cell not in self.lang_counter.keys():
+                self.lang_counter[cell] = Counter({language:1})
             else :
-                self.lang_counter[cell] = self.lang_counter[cell] + Counter(language,1)
-            print('process tweet ass')
+                self.lang_counter[cell] = self.lang_counter[cell] + Counter({language:1})
             
     def process_wrapper(self, path_to_dataset, chunk_start, chunk_size):
         """Main method executed by worker process to split chunk into smaller
