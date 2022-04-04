@@ -51,8 +51,7 @@ class DataProcessor():
         self.lang_counter = dict(Counter())
     
     def get_results(self): #retrive_results in repo
-        result = {"language": self.lang_counter}
-        return result
+        return self.lang_counter
 
     def process_tweet(self, tweet):
         """Process tweet and perform counting operations

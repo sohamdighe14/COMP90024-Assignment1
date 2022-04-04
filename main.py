@@ -2,9 +2,10 @@
 import argparse
 import os
 from datetime import datetime as dt
+from collections import Counter
 from mpi4py import MPI
 from data_preprocessing import break_chunks, DataProcessor
-from util import SydGrid,LangCodes
+from util import SydGrid,LangCodes,total_language_count
 
 # Get start time for the program
 STARTTIME = dt.now()
@@ -46,18 +47,41 @@ def main():
             chunks.append({"chunkStart": chunkStart, "chunkSize": chunkSize})
     else:
         chunks = None
-        
+
     COMM.Barrier()
+    chunk_per_process = COMM.scatter(chunks, root=0)
+
+    print("Rank " + str(RANK) + " received chunk - chunkStart: " + str(
+        chunk_per_process['chunkStart']) + " -  chunkSize " +
+          str(chunk_per_process['chunkSize']))
+
+    # Start processing of chunk
+    dataProcessor.process_wrapper(dataSetPath,
+                                   chunk_per_process["chunkStart"],
+                                   chunk_per_process["chunkSize"])
+   
+    worker_results = dataProcessor.get_results()
     
     ## Still waiting on helper functions to be finished and defined before we can fill in blanks
     
-    processorChunks = COMM.scatter(chunks, root=0)
     
     if RANK != 0:
         ENDTIME = dt.now()
-        
+    worker_results = COMM.gather(worker_results, root=0)
+
     COMM.Barrier()
     
+    if RANK==0:
+        counter_lang = dict(Counter())
+        for item in worker_results:
+            for lang in item:
+                counter_lang[item][lang] = counter_lang[item][lang] + worker_results[item][lang] 
+    
+    print("")
+    print("Final results")
+    total_language_count(counter_lang, lc)
+    ENDTIME = dt.now()
+    print("Total execution time was: " + str(ENDTIME - STARTTIME))
     ## Still waiting on helper functions to be finished and defined before we can fill in blanks
     
 if __name__ == "__main__":
