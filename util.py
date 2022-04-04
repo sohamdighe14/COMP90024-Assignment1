@@ -69,6 +69,7 @@ def total_language_count(dict_lang, lang_codes):
     counter_language -- counter with language counts
     supported_languages -- dict mapping lancode to name
     """
+    print(len(dict_lang.keys()))
     for item in dict_lang:
         print("Cell :",item)
         print('# tweets', sum(dict_lang[item].values()))

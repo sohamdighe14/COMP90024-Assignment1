@@ -16,8 +16,8 @@ COMM = MPI.COMM_WORLD
 SIZE = COMM.Get_size()
 RANK = COMM.Get_rank()
 
-dataset = 'smallTwitter.json'
-langcodes = 'language_codes.json'
+dataset = 'tinyTwitter.json'
+langcodes = "language_codes.json"
 sydGrid = "sydGrid.json"
 
 """
@@ -26,10 +26,11 @@ argParser.add_argument('--dataset', type = str, default = 'bigTwitter.json')
 argParser.add_argument('--langcodes', type = str, default = 'language_codes.json')
 args = argParser.parse_args()
 """
+here = os.path.dirname(os.path.abspath(__file__))
+dataSetPath = os.path.join(here, dataset)
+codesPath = os.path.join(here, langcodes)
+gridPath = os.path.join(here, sydGrid)
 
-dataSetPath = "./" + dataset
-codesPath = "./" + langcodes
-gridPath = "./" + sydGrid
 
 lc = LangCodes(codesPath)
 grid = SydGrid(gridPath)
@@ -50,11 +51,11 @@ def main():
 
     COMM.Barrier()
     chunk_per_process = COMM.scatter(chunks, root=0)
-
+    """
     print("Rank " + str(RANK) + " received chunk - chunkStart: " + str(
         chunk_per_process['chunkStart']) + " -  chunkSize " +
           str(chunk_per_process['chunkSize']))
-
+    """
     # Start processing of chunk
     dataProcessor.process_wrapper(dataSetPath,
                                    chunk_per_process["chunkStart"],
@@ -63,7 +64,6 @@ def main():
     worker_results = dataProcessor.get_results()
     
     ## Still waiting on helper functions to be finished and defined before we can fill in blanks
-    
     
     if RANK != 0:
         ENDTIME = dt.now()
@@ -83,6 +83,6 @@ def main():
     ENDTIME = dt.now()
     print("Total execution time was: " + str(ENDTIME - STARTTIME))
     ## Still waiting on helper functions to be finished and defined before we can fill in blanks
-    
+
 if __name__ == "__main__":
     main()

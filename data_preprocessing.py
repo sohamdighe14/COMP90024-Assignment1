@@ -46,7 +46,7 @@ def break_batches(file_path, chunk_start, chunk_size, batch_size):
 
 class DataProcessor():
 
-    def __init__(self, batch_size):
+    def __init__(self, batch_size = 1024):
         self.batch_size = batch_size #BATCH_SIZE in repo
         self.lang_counter = dict(Counter())
     
