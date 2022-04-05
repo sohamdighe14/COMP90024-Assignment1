@@ -5,7 +5,7 @@ from datetime import datetime as dt
 from collections import Counter
 from mpi4py import MPI
 from data_preprocessing import break_chunks, DataProcessor
-from util import SydGrid,LangCodes,total_language_count
+from util import LangCodes,total_language_count
 
 # Get start time for the program
 STARTTIME = dt.now()
@@ -75,11 +75,12 @@ def main():
                 else:
                     counter_lang[lang] = counter_lang[lang] + item[lang] 
     
-    print("")
-    print("Final results")
-    total_language_count(counter_lang, lc)
-    ENDTIME = dt.now()
-    print("Total execution time was: " + str(ENDTIME - STARTTIME))
+        print("")
+        print("Final results")
+        print(counter_lang)
+        total_language_count(counter_lang, lc)
+        ENDTIME = dt.now()
+        print("Total execution time was: " + str(ENDTIME - STARTTIME))
     ## Still waiting on helper functions to be finished and defined before we can fill in blanks
 
 if __name__ == "__main__":
