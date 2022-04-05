@@ -10,6 +10,47 @@ Final results
 Cell : C3
 # tweets 6674
 # languages : 31
-Most common languages in dataset:
 1. English (en), 6196
-2. Japanese (ja), 72
+2. Portuguese (pt), 21
+3. Romanian (ro), 19
+4. Japanese (ja), 72
+5. Catalan (ca), 28
+6. Chinese (zh), 19
+7. Indonesian (in), 48
+8. Spanish (es), 53
+9. Thai (th), 10
+10. French (fr), 14
+Cell : B3
+# tweets 1054
+# languages : 19
+1. English (en), 993
+2. Catalan (ca), 2
+3. Romanian (ro), 3
+4. German (de), 5
+5. Italian (it), 4
+6. Spanish (es), 5
+7. Turkish (tr), 3
+8. Japanese (ja), 8
+9. Dutch (nl), 2
+10. Thai (th), 1
+Cell : B2
+# tweets 253
+# languages : 8
+1. English (en), 240
+2. French (fr), 1
+3. Italian (it), 5
+4. Spanish (es), 1
+5. Catalan (ca), 1
+Cell : C2
+# tweets 184
+# languages : 14
+1. English (en), 167
+2. Portuguese (pt), 3
+3. Italian (it), 1
+4. Indonesian (in), 2
+5. Danish (da), 1
+6. German (de), 1
+7. Spanish (es), 1
+8. Catalan (ca), 1
+9. French (fr), 1
+Total execution time was: 0:00:37.092691
