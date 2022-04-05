@@ -6,7 +6,6 @@ Error reading row from JSON file - ignoring
 ]}
 
 Final results
-{'C3': Counter({'en': 6196, 'ja': 72, 'und': 57, 'es': 53, 'in': 48, 'ca': 28, 'pt': 21, 'ht': 20, 'ro': 19, 'zh': 19, 'tl': 18, 'it': 16, 'de': 15, 'fr': 14, 'et': 14, 'th': 10, 'da': 8, 'nl': 8, 'tr': 5, 'ko': 5, 'sv': 4, 'cy': 4, 'pl': 4, 'vi': 4, 'cs': 3, 'ar': 2, 'fi': 2, 'no': 2, 'fa': 1, 'bn': 1, 'hu': 1}), 'B3': Counter({'en': 993, 'ja': 8, 'de': 5, 'es': 5, 'zh': 5, 'it': 4, 'pt': 4, 'in': 4, 'fr': 4, 'und': 4, 'ro': 3, 'tr': 3, 'tl': 3, 'ca': 2, 'nl': 2, 'et': 2, 'th': 1, 'hi': 1, 'ht': 1}), 'B2': Counter({'en': 240, 'it': 5, 'tl': 2, 'und': 2, 'fr': 1, 'et': 1, 'es': 1, 'ca': 1}), 'C2': Counter({'en': 167, 'pt': 3, 'in': 2, 'cy': 2, 'it': 1, 'et': 1, 'und': 1, 'da': 1, 'de': 1, 'ht': 1, 'es': 1, 'ca': 1, 'lt': 1, 'fr': 1})}
 Cell : C3
 # tweets 6674
 # languages : 31
@@ -53,4 +52,4 @@ Cell : C2
 7. Spanish (es), 1
 8. Catalan (ca), 1
 9. French (fr), 1
-Total execution time was: 0:00:37.092691
+Total execution time was: 0:04:37.502371
