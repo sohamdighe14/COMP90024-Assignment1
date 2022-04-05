@@ -73,14 +73,15 @@ def total_language_count(dict_lang, lang_codes):
     counter_language -- counter with language counts
     supported_languages -- dict mapping lancode to name
     """
-    for item in dict_lang:
-        print("Cell :",item)
-        print('# tweets', sum(dict_lang[item].values()))
-        print('# languages :', len(dict_lang[item]))
-        counter_language = dict_lang[item]
+    for k,v in dict_lang.items():
         count = 1
-        print("Most common languages in dataset:")
-        for language in counter_language.most_common(10):
-            #if there is a bug its here
-            print(str(count) + ". " + lang_codes[language[0]] + " (" + language[0] + ")" + ", " + str(language[1]))
-            count += 1
+        print("Cell :",k)
+        print('# tweets', sum(v.values()))
+        print('# languages :', len(v))
+        counter_language = v
+        counter = 0
+        for key, val in v.items():
+            if key in lang_codes.keys() and counter<10:
+                print(str(count) + ". " + lang_codes[key] + " (" + key+ ")" + ", " + str(val))
+                count += 1
+                counter +=1
