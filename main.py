@@ -77,7 +77,6 @@ def main():
     
         print("")
         print("Final results")
-        print(counter_lang)
         total_language_count(counter_lang, lc)
         ENDTIME = dt.now()
         print("Total execution time was: " + str(ENDTIME - STARTTIME))
