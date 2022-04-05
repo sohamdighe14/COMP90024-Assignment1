@@ -64,7 +64,7 @@ def GetData(tweet):
         x = tweet['doc']['geo']['coordinates'][1]
         y = tweet['doc']['geo']['coordinates'][0]
         #checking if the point lies in grid
-        if XMAX > x > XMIN and YMAX > y > YMIN:
+        if XMAX >= x > XMIN and YMAX >= y > YMIN:
             tweet_data = {}
             tweet_data['language'] = language
             tweet_data['grid_cell'] = GetGridCell(x,y)
