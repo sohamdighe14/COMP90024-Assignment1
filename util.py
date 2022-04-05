@@ -4,16 +4,9 @@ import os
 
 def SydGrid(file_name):
     '''
-    "geo":{"type":"Point","coordinates":[-33.86751,151.20797]}
-    all 8 acesss and read same time
-    datastructures to optimize performance
-    showq -q snowy| less
-    master has rank 0 always
-    sbatch <script_name> 
-    squeue -u <username>
-    module avail mpip4py//list all libs
-    tell module load <lib> in slurm script
-    scancel <job_id>
+    This method loads the data from the grid file
+    as a dictionary with each grid being named as
+    given in the assignment brief. 
     '''
     syd_grid = []
     with open(file_name) as f:
@@ -36,6 +29,10 @@ def SydGrid(file_name):
 
 
 def LangCodes(file_name):
+    '''
+    This method loads the language codes
+    from the codes file as a dictionary.
+    '''
     lang_codes = dict()
     with open(file_name, encoding='utf-8') as f:
             data = json.load(f) 
@@ -45,6 +42,12 @@ def LangCodes(file_name):
 
 
 def GetGridCell(x,y):
+    '''
+    returns the cell which a given coordinate belongs to
+    Keyword arguments:
+    x - x cooordinate
+    y - y coordinate
+    '''
     here = os.path.dirname(os.path.abspath(__file__))
     gridPath = os.path.join(here, './sydGrid.json')
     grid = SydGrid(gridPath)
@@ -54,6 +57,9 @@ def GetGridCell(x,y):
 
 
 def GetData(tweet):
+    '''
+    return the cell and language from a given tweet.
+    '''
     XMAX = 151.9925508053294
     XMIN = 149.79255080532937
     YMAX = -32.81644989181766
@@ -72,11 +78,12 @@ def GetData(tweet):
 
 
 def total_language_count(dict_lang, lang_codes):
-    """Print the results from language code counting.
+    '''
+    Print the results from language code counting.
     Keyword arguments:
     counter_language -- counter with language counts
     supported_languages -- dict mapping lancode to name
-    """
+    '''
     for k,v in dict_lang.items():
         count = 1
         print("Cell :",k)

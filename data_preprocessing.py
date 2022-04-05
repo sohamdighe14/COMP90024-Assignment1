@@ -4,13 +4,14 @@ from collections import Counter
 from util import GetData
 
 def breakChunks(fpath, chunkSize, totalSize):
-    """
-    Break the file into into separate batches to be processed by different
-    processors
+    '''
+    Break the file into into separate chunks 
+    to be processed by different processors
     keyword:
+    fpath - file path
     chunkSize - the size of each chunk
     totalSize - the total size of the file
-    """
+    '''
     with open(fpath,'rb') as f:
         #position pointer for file 
         chunkEnd = f.tell()
@@ -33,6 +34,15 @@ def breakChunks(fpath, chunkSize, totalSize):
 
 
 def breakBatches(fpath, chunkStart, chunkSize, batchSize):
+    '''
+    Break the file into into separate batches 
+    to be processed by different processors
+    keyword:
+    fpath - file path
+    chunkSize - the size of each chunk
+    totalSize - the total size of the file
+    batchSize - 1024 fixed
+    '''
     with open(fpath, 'rb') as f:
         batchEnd = chunkStart
 
@@ -61,10 +71,11 @@ class TweetProcessor():
         return self.lang_counter
 
     def process_tweet(self, tweet):
-        """Process tweet and perform counting operations
+        '''
+        Process tweet and perform counting operations
         Keyword arguments:
         tweet -- tweet in JSON format
-        """
+        '''
         # Extract language
         data = GetData(tweet)
         if data is not None:
@@ -76,38 +87,31 @@ class TweetProcessor():
                 self.lang_counter[cell] = self.lang_counter[cell] + Counter({language:1})
             
     def process_wrapper(self, path_to_dataset, chunk_start, chunk_size):
-        """Main method executed by worker processes to split file chunk into smaller
-        batches and then process the batches sequentially
+        '''
+        This is the main method which is invoked on calling the class it 
+        further calls breaks the chunk into tweets. 
         Keyword arguments:
         path_to_dataset -- Path to dataset to be split up
         chunk_start -- Byte offset of chunk from beginning of file
         chunk_size -- Size of chunk in bytes
-        """
+        '''
         with open(path_to_dataset, 'rb') as f:
             batches = []
 
-            # Split up chunk into batches of size BATCH_SIZE
             for read_start, read_size in breakBatches(path_to_dataset, chunk_start, chunk_size, self.batch_size):
                 batches.append({"batchStart": read_start, "batchSize": read_size})
 
-            # Process batches sequentially
             for batch in batches:
-
-                # Move to start position of batch
                 f.seek(batch['batchStart'])
 
                 if batch['batchSize'] > 0:
-                    # Read in next batch in bytes as given per batchSize and
-                    # split lines
                     content = f.read(batch['batchSize']).splitlines()
 
                     for line in content:
-                        # Decode each line as utf-8 string
-                        line = line.decode('utf-8')  # Convert to utf-8
-                        if line[-1] == ",":  # if line has comma
-                            line = line[:-1]  # removing trailing comma
+                        line = line.decode('utf-8')  
+                        if line[-1] == ",":  
+                            line = line[:-1] 
                         try:
-                            # Load tweet in JSON format
                             tweet = json.loads(line)
                             self.process_tweet(tweet)
 
