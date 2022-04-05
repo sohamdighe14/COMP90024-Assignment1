@@ -3,48 +3,55 @@ import json
 from collections import Counter
 from util import GetData
 
-def break_chunks(file_name, chunk_size, total_size):
-    with open(file_name,'rb') as f:
+def breakChunks(fpath, chunkSize, totalSize):
+    """
+    Break the file into into separate batches to be processed by different
+    processors
+    keyword:
+    chunkSize - the size of each chunk
+    totalSize - the total size of the file
+    """
+    with open(fpath,'rb') as f:
         #position pointer for file 
-        chunk_end = f.tell()
+        chunkEnd = f.tell()
 
         while True:
             # we update this for every   
-            chunk_start = chunk_end
+            chunkStart = chunkEnd
             # define ending of the chunk
-            f.seek(f.tell()+chunk_size)
+            f.seek(f.tell()+chunkSize)
             # read everyline 
             f.readline()
             #checking if the line is inside the chunk 
-            chunk_end = f.tell()
+            chunkEnd = f.tell()
             #getting the size required
-            if chunk_end > total_size:
-                chunk_end = total_size
-            yield chunk_start, chunk_end-chunk_start
-            if chunk_end == total_size:
+            if chunkEnd > totalSize:
+                chunkEnd = totalSize
+            yield chunkStart, chunkEnd-chunkStart
+            if chunkEnd == totalSize:
                 break
 
 
-def break_batches(file_path, chunk_start, chunk_size, batch_size):
-    with open(file_path, 'rb') as f:
-        batch_end = chunk_start
+def breakBatches(fpath, chunkStart, chunkSize, batchSize):
+    with open(fpath, 'rb') as f:
+        batchEnd = chunkStart
 
         while True:
-            batch_start = batch_end
+            batchStart = batchEnd
             # go to current position + batch_size
-            f.seek(batch_start + batch_size)
+            f.seek(batchStart + batchSize)
             # read the lines as a whole
             f.readline()
-            batch_end = f.tell()
-            if batch_end > chunk_start + chunk_size:
-                batch_end = chunk_start + chunk_size
-            yield batch_start, batch_end - batch_start
+            batchEnd = f.tell()
+            if batchEnd > chunkStart + chunkSize:
+                batchEnd = chunkStart + chunkSize
+            yield batchStart, batchEnd - batchStart
             # reaching the end of chunk
-            if batch_end == chunk_start + chunk_size:
+            if batchEnd == chunkStart + chunkSize:
                 break
 
 
-class DataProcessor():
+class TweetProcessor():
 
     def __init__(self,batch_size = 1024):
         self.batch_size = batch_size #BATCH_SIZE in repo
@@ -69,8 +76,8 @@ class DataProcessor():
                 self.lang_counter[cell] = self.lang_counter[cell] + Counter({language:1})
             
     def process_wrapper(self, path_to_dataset, chunk_start, chunk_size):
-        """Main method executed by worker process to split chunk into smaller
-        batches and process batches sequentially
+        """Main method executed by worker processes to split file chunk into smaller
+        batches and then process the batches sequentially
         Keyword arguments:
         path_to_dataset -- Path to dataset to be split up
         chunk_start -- Byte offset of chunk from beginning of file
@@ -80,7 +87,7 @@ class DataProcessor():
             batches = []
 
             # Split up chunk into batches of size BATCH_SIZE
-            for read_start, read_size in break_batches(path_to_dataset, chunk_start, chunk_size, self.batch_size):
+            for read_start, read_size in breakBatches(path_to_dataset, chunk_start, chunk_size, self.batch_size):
                 batches.append({"batchStart": read_start, "batchSize": read_size})
 
             # Process batches sequentially

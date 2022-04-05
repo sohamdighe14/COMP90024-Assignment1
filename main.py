@@ -4,7 +4,7 @@ import os
 from datetime import datetime as dt
 from collections import Counter
 from mpi4py import MPI
-from data_preprocessing import break_chunks, DataProcessor
+from data_preprocessing import breakChunks, TweetProcessor
 from util import LangCodes,total_language_count
 
 # Get start time for the program
@@ -31,13 +31,13 @@ codesPath = os.path.join(here, args.langcodes)
 lc = LangCodes(codesPath)
 
 def main():
-    dataProcessor = DataProcessor()
+    tweetProcessor = TweetProcessor()
     if RANK == 0:
         dataTotSize = os.path.getsize(dataSetPath)
         sizePerProcess = dataTotSize / SIZE
         
         chunks = []
-        for chunkStart, chunkSize in break_chunks(dataSetPath,
+        for chunkStart, chunkSize in breakChunks(dataSetPath,
                                               int(sizePerProcess),
                                               dataTotSize):
             chunks.append({"chunkStart": chunkStart, "chunkSize": chunkSize})
@@ -52,17 +52,17 @@ def main():
           str(chunk_per_process['chunkSize']))
     """
     # Start processing of chunk
-    dataProcessor.process_wrapper(dataSetPath,
+    tweetProcessor.process_wrapper(dataSetPath,
                                    chunk_per_process["chunkStart"],
                                    chunk_per_process["chunkSize"])
    
-    worker_results = dataProcessor.get_results()
+    worker_result = tweetProcessor.get_results()
     
     ## Still waiting on helper functions to be finished and defined before we can fill in blanks
     
     if RANK != 0:
         ENDTIME = dt.now()
-    worker_results = COMM.gather(worker_results, root=0)
+    worker_results = COMM.gather(worker_result, root=0)
 
     COMM.Barrier()
     
