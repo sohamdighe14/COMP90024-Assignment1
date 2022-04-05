@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import json 
+import os
 
 def SydGrid(file_name):
     '''
@@ -44,7 +45,9 @@ def LangCodes(file_name):
 
 
 def GetGridCell(x,y):
-    grid = SydGrid('./sydGrid.json')
+    here = os.path.dirname(os.path.abspath(__file__))
+    gridPath = os.path.join(here, './sydGrid.json')
+    grid = SydGrid(gridPath)
     for item in grid:
         if item['xmin']<x<=item['xmax'] and item['ymin']<y<=item['ymax']:
             return item['cell']
